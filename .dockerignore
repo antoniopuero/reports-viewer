@@ -1,0 +1,6 @@
+**/.git
+*/.DS_STORE
+*/.node_env
+compose*
+Dockerfile*
+node_modules/

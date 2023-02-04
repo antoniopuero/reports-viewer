@@ -1,0 +1,16 @@
+services:
+  report_viewer:
+    build:
+      context: .
+    container_name: report_viewer
+    ports:
+      - '3000:3000'
+    links:
+      - report_redis
+  report_redis:
+    container_name: report_redis
+    image: redis:bullseye
+    volumes:
+      - ./data:/data
+    ports:
+      - '6379:6379'

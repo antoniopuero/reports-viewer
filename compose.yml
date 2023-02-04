@@ -1,0 +1,4 @@
+services:
+  report_viewer:
+    build:
+      dockerfile: ./Dockerfile
