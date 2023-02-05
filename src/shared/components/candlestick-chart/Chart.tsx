@@ -19,8 +19,8 @@ export default function Chart({
   forPdf: boolean;
 }) {
   const padding = 10;
-  const leftAxisWidth = 50;
-  const bottomAxisHeight = 30;
+  const leftAxisWidth = forPdf ? 0 : 50;
+  const bottomAxisHeight = forPdf ? 0 : 30;
   const chartHeight = height - bottomAxisHeight - 2 * padding;
   const chartWidth = width - leftAxisWidth - 2 * padding;
 
@@ -28,7 +28,8 @@ export default function Chart({
 
   const getY = (price: number) =>
     Math.abs(
-      ((price - data.minPrice) / data.priceRange) * chartHeight - chartHeight
+      ((price - data.minPrice) / (data.priceRange * 1.1)) * chartHeight -
+        chartHeight
     );
   const xExtent = extent(data.bars, (d) => d.t);
   const yExtent = extent(data.bars, (d) => d.h);

@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { v4 as uuidv4 } from 'uuid';
-import { registerSocket, reportQueue } from '@/report-worker/worker';
+import { storeSocketForWorker, reportQueue } from '@/report-worker/worker';
 import { updateUserReport } from '@/external/redis';
 import { sessionConfig } from '@/config';
 import type { NextApiResponseServerIO } from '@/types';
@@ -19,7 +19,8 @@ export default withIronSessionApiRoute(
     ) {
         const reportId = uuidv4();
 
-        registerSocket(res.socket.server.io);
+        storeSocketForWorker(res.socket.server.io);
+
         await reportQueue.add({ reportId, userId: req.session.id });
 
         await updateUserReport(

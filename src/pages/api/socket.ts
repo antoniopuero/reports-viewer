@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
-import { initializeSocket } from '@/ws-communication/server';
-import { registerSocket } from '@/report-worker/worker';
+import { initializeSocket } from '@/sockets/server';
+import { storeSocketForWorker } from '@/report-worker/worker';
 import type { NextApiResponseServerIO } from '@/types';
 
 export const config = {
@@ -18,7 +18,8 @@ export default function handler(
             res.socket.server as any,
             '/api/socket'
         );
-        registerSocket(res.socket.server.io);
+
+        storeSocketForWorker(res.socket.server.io);
     }
 
     res.end();

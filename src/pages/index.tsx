@@ -5,7 +5,7 @@ import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 import { getTickers } from '@/external/polygon-service';
 import { sessionConfig } from '@/config';
-import { useSocket } from '@/ws-communication/useSocket';
+import { useSocket } from '@/sockets/client';
 import Configuration from '@/components/Configuration';
 import ChartView from '@/components/ChartView';
 import ReportList from '@/components/ReportList';

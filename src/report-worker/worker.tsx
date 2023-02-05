@@ -5,14 +5,14 @@ import { redisUrl, storageFolder } from '@/config';
 import { getTickers, getBars } from '@/external/polygon-service';
 import { updateUserReport } from '@/external/redis';
 import PdfReport from '@/components/PdfReport';
-import { sendToUser } from '@/ws-communication/server';
+import { sendToUser } from '@/sockets/server';
 import { SOCKET_EVENTS, REPORT_STATUSES } from '@/constants';
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 let io: ServerIO | null = null;
 
-export const registerSocket = (socketIO: ServerIO) => {
+export const storeSocketForWorker = (socketIO: ServerIO) => {
   io = socketIO;
 };
 
@@ -51,7 +51,7 @@ reportQueue.process(async (job) => {
   for (const ticker of tickers) {
     // artificial slowing down, also not to hit rate limit
     await sleep(5000);
-    const barData = await getBars({ ticker: ticker.ticker, duration: 'year' });
+    const barData = await getBars({ ticker: ticker.ticker, duration: 'month' });
     progress += stepProgress;
     job.progress(progress);
 
