@@ -3,6 +3,9 @@ import { subWeeks, subMonths, subYears, format } from 'date-fns/fp';
 import { polygonApiToken } from '@/config';
 import type { Ticker, BarData, AggregatedBarData } from '@/types';
 
+// simple inmemory cache to avoid extra requests
+const cache = new Map();
+
 const BASE_URL = 'https://api.polygon.io';
 
 function makeRequest<T>(path: string, searchParams = {}) {
@@ -12,11 +15,16 @@ function makeRequest<T>(path: string, searchParams = {}) {
                 apiKey: polygonApiToken,
                 ...searchParams,
             },
+            retry: {
+                statusCodes: [429],
+                limit: 5,
+            },
+            cache,
         })
         .json<T>();
 }
 
-export async function getTickers() {
+export async function getTickers({ limit = 20 }: { limit?: number } = {}) {
     const { results } = await makeRequest<{ results: Ticker[] }>(
         'v3/reference/tickers',
         {
@@ -24,7 +32,7 @@ export async function getTickers() {
             market: 'stocks',
             sort: 'name',
             order: 'ticker',
-            limit: 20,
+            limit,
         }
     );
 

@@ -5,15 +5,16 @@
   min-height: 100vh;
 }
 
-.configurator {
-  display: flex;
-  justify-content: center;
-  column-gap: 0.5rem;
-  padding: 2rem;
-}
-
 .chartContainer {
+  padding: 2rem;
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.reportList {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
 }

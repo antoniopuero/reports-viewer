@@ -1,4 +1,5 @@
 import React from 'react';
+import { CustomLine, CustomRect } from './Elements';
 import type { BarData } from '@/types';
 
 const Candle = ({
@@ -6,11 +7,13 @@ const Candle = ({
   x,
   width,
   getY,
+  forPdf,
 }: {
   data: BarData;
   x: number;
   width: number;
   getY: (p: number) => number;
+  forPdf: boolean;
 }) => {
   const isUp = data.c > data.o;
   const top = getY(isUp ? data.c : data.o);
@@ -22,7 +25,7 @@ const Candle = ({
 
   return (
     <>
-      <rect
+      <CustomRect
         x={x - width / 2}
         y={top}
         width={width}
@@ -30,22 +33,25 @@ const Candle = ({
         strokeWidth={1}
         stroke={color}
         fill={color}
+        forPdf={forPdf}
       />
-      <line
+      <CustomLine
         x1={x}
         y1={top}
         x2={x}
         y2={wickTop}
         strokeWidth={1.5}
         stroke={color}
+        forPdf={forPdf}
       />
-      <line
+      <CustomLine
         x1={x}
         y1={bottom}
         x2={x}
         y2={wickBottom}
         strokeWidth={1.5}
         stroke={color}
+        forPdf={forPdf}
       />
     </>
   );

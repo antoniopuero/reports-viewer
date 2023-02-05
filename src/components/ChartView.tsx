@@ -27,12 +27,21 @@ export default function ChartView({
   }, [ticker, duration]);
 
   if (!chartData) {
-    return null;
+    return (
+      <div className={styles.chartContainer}>
+        Please, select ticker and duration
+      </div>
+    );
   }
 
   return (
     <div className={styles.chartContainer}>
-      <CandlestickChart data={chartData} width={800} height={500} />
+      <CandlestickChart
+        data={chartData}
+        width={800}
+        height={500}
+        forPdf={false}
+      />
     </div>
   );
 }

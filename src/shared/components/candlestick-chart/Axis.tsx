@@ -26,8 +26,6 @@ export function LeftAxis({
     const host = select(ref.current);
     host.select('g').remove();
     const group = host.append('g');
-    // the upper-right corner of a d3 left axis sits at (0, 0), so
-    // we need to position that at the right edge of our axis "box"
     group.attr('transform', `translate(${width}, 0)`);
     group.call(axisGenerator);
   }, [scale, width]);

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import z, { ZodError, ZodIssue } from 'zod';
-import { getBars } from '@/external-apis/polygon-service';
+import { getBars } from '@/external/polygon-service';
 import { AggregatedBarData } from '@/types';
 
 const querySchema = z.object({

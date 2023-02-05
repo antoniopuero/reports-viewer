@@ -1,19 +1,26 @@
 import { useEffect } from 'react';
 import io from 'socket.io-client';
+import { REPORT_STATUSES, SOCKET_EVENTS } from '@/constants';
 
 export function useSocket({
-    onConnect = () => {},
-    onProgress = () => {},
-    onReady = () => {},
-} = {}) {
+    userId,
+    onProgress,
+}: {
+    userId?: string;
+    onProgress?: (status: string, data: any) => void;
+}) {
     useEffect((): any => {
-        const socket = io({ path: '/api/socket' });
+        const socket = io({ path: '/api/socket', auth: { userId } });
 
-        socket.on('connect', () => onConnect(socket));
-        socket.on('report.progress', (reportProgress) =>
-            onProgress(reportProgress)
+        socket.on(SOCKET_EVENTS.progress, (progress) =>
+            onProgress?.(REPORT_STATUSES.pending, progress)
         );
-        socket.on('report.ready', (report) => onProgress(report));
+        socket.on(SOCKET_EVENTS.finished, (report) =>
+            onProgress?.(REPORT_STATUSES.finished, report)
+        );
+        socket.on(SOCKET_EVENTS.failed, (report) =>
+            onProgress?.(REPORT_STATUSES.failed, report)
+        );
 
         if (socket) return () => socket.disconnect();
     }, []);
